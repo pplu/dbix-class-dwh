@@ -21,9 +21,6 @@ sub get_column_from_fieldspec {
 sub dwh_query {
     my ($self, $query) = @_;
 
-    use Data::Dumper;
-    print STDERR Dumper($query);
-
     # Convert dimensions into the appropiate JOINs
     my $joins   = {};
     my $columns = [ ];
@@ -72,12 +69,6 @@ sub dwh_query {
 sub dimension {
   my ($self, $search, $update) = @_;
 
-#  use Data::Dumper;
-#  if ($obj->count > 1) {
-#      die "Search for dimension: '".$obj->first->table."' was unexpectedly ambiguous for condition: ".Dumper($search)."\nFound ".$obj->count." rows.\n";
-#  } else {
-#      $obj = $obj->single;
-#  }
   my $obj = $self->search($search)->first;
 
   if (not defined $obj) {
@@ -112,7 +103,6 @@ sub fact {
    foreach my $key (keys %info) {
       if (ref($info{$key}) eq 'HASH') {
         my $dim_id = $self->get_dimension($key, $info{$key}, {});
-        #my $dim_id = $fact->search_related($key)->dimension($info{$key}, {});
         $fact->$key($dim_id);
       } else {
         $fact->$key($info{$key});
